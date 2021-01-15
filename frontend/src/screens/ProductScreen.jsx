@@ -1,18 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner'
 import Rating from '../components/Rating';
-import products from '../products'
+import axios from 'axios';
 
 const ProductScreen = ({ match }) => {
-    const product = products.find(p => p._id === match.params.id);
+    const [product, setProduct] = useState({});
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            const { data } = await axios.get(`/api/products/${match.params.id}`)
+
+            setProduct(data)
+        }
+
+        fetchProduct();
+    }, [match])
 
     return (
         <>
             <Link className='btn btn-light my-3' to='/'>Go back</Link>
             <Row>
                 <Col md={6}>
-                    <Image src={product.image} alt={product.name} fluid />
+                    {
+                        !product.image ? <Spinner animation="border" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </Spinner>
+                            :
+                            <Image src={product.image} alt={product.name} fluid />
+                    }
                 </Col>
                 <Col md={3}>
                     <ListGroup variant='flush'>
