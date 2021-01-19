@@ -1,7 +1,7 @@
-import asyncHandler from "express-async-handler";
-import Order from "../models/productModel.js";
+import asyncHandler from 'express-async-handler';
+import Order from '../models/orderModel.js';
 
-// @desc   Create new oorder
+// @desc   Create new order
 // @route  GET /api/orders
 // @acces  Private
 
@@ -18,7 +18,7 @@ const addOrderItems = asyncHandler(async (req, res) => {
 
   if (orderItems && orderItems.length === 0) {
     res.status(400);
-    throw new Error("No order items");
+    throw new Error('No order items');
     return;
   } else {
     const order = new Order({
@@ -38,4 +38,22 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems };
+// @desc   Get order by ID
+// @route  GET /api/orders/:id
+// @acces  Private
+
+const getOrderById = asyncHandler(async (req, res) => {
+  const order = await Order.findById(req.params.id).populate(
+    'user',
+    'name email'
+  );
+
+  if (order) {
+    res.json(order);
+  } else {
+    res.status(404);
+    throw new Error('Order not found');
+  }
+});
+
+export { addOrderItems, getOrderById };
