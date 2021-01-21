@@ -12,9 +12,9 @@ const PlaceOrderScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
 
   if (!cart.shippingAddress.address) {
-    history.push('/shipping')
+    history.push('/shipping');
   } else if (!cart.paymentMethod) {
-    history.push('/payment')
+    history.push('/payment');
   }
 
   //Calculate prices
@@ -41,10 +41,10 @@ const PlaceOrderScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
-      history.push(`/order/${order._id}`)
+      history.push(`/order/${order._id}`);
     }
     // eslint-disable-next-line
-  }, [history, success])
+  }, [history, success]);
 
   const placeOrderHandler = () => {
     dispatch(
@@ -60,7 +60,6 @@ const PlaceOrderScreen = ({ history }) => {
     );
   };
 
-  
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -153,7 +152,7 @@ const PlaceOrderScreen = ({ history }) => {
                 <Button
                   type="button"
                   className="btn-block"
-                  diabled={cart.cartItems === 0}
+                  disabled={cart.cartItems === 0}
                   onClick={placeOrderHandler}
                 >
                   Place order
