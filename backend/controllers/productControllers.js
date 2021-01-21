@@ -63,10 +63,9 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(createdProduct);
 });
 
-// @desc   Update a product
-// @route  PUT /api/products/:id
-// @acces  Private/Admin
-
+// @desc    Update a product
+// @route   PUT /api/products/:id
+// @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
   const {
     name,
@@ -76,7 +75,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     brand,
     category,
     countInStock,
-    numReviews,
   } = req.body;
 
   const product = await Product.findById(req.params.id);
@@ -89,7 +87,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.brand = brand;
     product.category = category;
     product.countInStock = countInStock;
-    product.numReviews = numReviews;
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
@@ -98,7 +95,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     throw new Error('Product not found');
   }
 });
-
 export {
   getProducts,
   getProductById,
