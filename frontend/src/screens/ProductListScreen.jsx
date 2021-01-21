@@ -41,14 +41,14 @@ const ProductListScreen = ({ history, match }) => {
   useEffect(() => {
     dispatch({ type: PRODUCT_CREATE_RESET });
 
-    if (!userInfo.isAdmin) {
+    if (!userInfo || !userInfo.isAdmin) {
       history.push('/login');
     }
 
     if (successCreate) {
       history.push(`/admin/product/${createdProduct._id}/edit`);
     } else {
-      dispatch(listProducts());
+      dispatch(listProducts('', pageNumber));
     }
   }, [
     dispatch,
@@ -56,18 +56,18 @@ const ProductListScreen = ({ history, match }) => {
     userInfo,
     successDelete,
     successCreate,
-    createdProduct, 
+    createdProduct,
     pageNumber,
   ]);
 
   const deleteHandler = (id) => {
-    if (window.confirm('Are you sure?')) {
+    if (window.confirm('Are you sure')) {
       dispatch(deleteProduct(id));
     }
   };
 
   const createProductHandler = () => {
-    dispatch(createProduct('', pageNumber));
+    dispatch(createProduct());
   };
 
   return (
@@ -78,7 +78,7 @@ const ProductListScreen = ({ history, match }) => {
         </Col>
         <Col className="text-right">
           <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create product
+            <i className="fas fa-plus"></i> Create Product
           </Button>
         </Col>
       </Row>
@@ -120,9 +120,7 @@ const ProductListScreen = ({ history, match }) => {
                     <Button
                       variant="danger"
                       className="btn-sm"
-                      onClick={() => {
-                        deleteHandler(product._id);
-                      }}
+                      onClick={() => deleteHandler(product._id)}
                     >
                       <i className="fas fa-trash"></i>
                     </Button>
