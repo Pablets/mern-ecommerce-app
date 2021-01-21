@@ -6,12 +6,43 @@ h3 {
   padding: 1rem 0;
 }
 
-h1{
+h1 {
   font-size: 1.8rem;
   padding: 1rem 0;
 }
 
-h2{
+h2 {
   font-size: 1.4rem;
   padding: 0.5rem 0;
 }
+
+/* carousel */
+.carousel-item-next,
+.carousel-item-prev,
+.carousel-item-active {
+  display: flex;
+}
+
+.carousel-caption {
+  position: absolute;
+  top: 30%;
+  width: 50%;
+  text-align: right;
+  right: 0;
+}
+
+.carousel-caption h2 {
+  display: inline-block;
+  width: 50%;
+  color: #fff;
+  text-align: left;
+}
+
+.carousel img {
+  height: 300px;
+  padding: 30px;
+  margin: 40px;
+  border-radius: 50%;
+}
+
+
