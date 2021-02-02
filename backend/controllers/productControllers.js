@@ -86,6 +86,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     price,
     description,
     image,
+    featuredImage,
+    featuredImageMobile,
     brand,
     category,
     countInStock,
@@ -98,6 +100,8 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.price = price;
     product.description = description;
     product.image = image;
+    product.featuredImage = featuredImage;
+    product.featuredImageMobile = featuredImageMobile;
     product.brand = brand;
     product.category = category;
     product.countInStock = countInStock;
@@ -151,12 +155,32 @@ const createProductReview = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Get top rated products
+// @desc   Get top rated products
 // @route   POST /api/products/top
 // @access  Public
 
 const getTopProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({}).sort({ rating: -1 }).limit(3);
+
+  res.json(products);
+});
+
+// @desc   Get featured products
+// @route   POST /api/products/featured
+// @access  Public
+
+const getFeaturedProducts = asyncHandler(async (req, res) => {
+  const products = await Product.find({
+    featuredImage: { $exists: true, $ne: '' },
+  });
+
+  res.json(products);
+});
+
+const getFeaturedProductsMobile = asyncHandler(async (req, res) => {
+  const products = await Product.find({
+    featuredImageMobile: { $exists: true, $ne: '' },
+  });
 
   res.json(products);
 });
@@ -168,5 +192,7 @@ export {
   createProduct,
   updateProduct,
   createProductReview,
-  getTopProducts
+  getTopProducts,
+  getFeaturedProducts,
+  getFeaturedProductsMobile,
 };

@@ -31,6 +31,16 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    featuredImage: {
+      type: String,
+      default: '',
+      setDefaultsOnInsert: true,
+    },
+    featuredImageMobile: {
+      type: String,
+      default: '',
+      setDefaultsOnInsert: true,
+    },
     brand: {
       type: String,
       required: true,

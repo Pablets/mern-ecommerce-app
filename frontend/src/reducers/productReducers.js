@@ -23,6 +23,12 @@ import {
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_REQUEST,
   PRODUCT_TOP_FAIL,
+  PRODUCT_FEATURED_REQUEST,
+  PRODUCT_FEATURED_SUCCESS,
+  PRODUCT_FEATURED_FAIL,
+  PRODUCT_FEATURED_MOBILE_REQUEST,
+  PRODUCT_FEATURED_MOBILE_SUCCESS,
+  PRODUCT_FEATURED_MOBILE_FAIL,
 } from '../constants/productConstants';
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -124,6 +130,35 @@ export const productTopRatedReducer = (state = { products: [] }, action) => {
     case PRODUCT_TOP_SUCCESS:
       return { loading: false, products: action.payload };
     case PRODUCT_TOP_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const productFeaturedReducer = (state = { products: [] }, action) => {
+  switch (action.type) {
+    case PRODUCT_FEATURED_REQUEST:
+      return { loading: true, products: [] };
+    case PRODUCT_FEATURED_SUCCESS:
+      return { loading: false, products: action.payload };
+    case PRODUCT_FEATURED_FAIL:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const productFeaturedMobileReducer = (
+  state = { products: [] },
+  action
+) => {
+  switch (action.type) {
+    case PRODUCT_FEATURED_MOBILE_REQUEST:
+      return { loading: true, products: [] };
+    case PRODUCT_FEATURED_MOBILE_SUCCESS:
+      return { loading: false, products: action.payload };
+    case PRODUCT_FEATURED_MOBILE_FAIL:
       return { loading: false, error: action.payload };
     default:
       return state;

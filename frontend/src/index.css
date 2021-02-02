@@ -39,10 +39,10 @@ h2 {
 }
 
 .carousel img {
-  height: 300px;
-  padding: 30px;
-  margin: 40px;
-  border-radius: 50%;
+  /* height: 300px; */
+  /* padding: 30px; */
+  margin: 0;
+  /* border-radius: 50%; */
 }
 
 

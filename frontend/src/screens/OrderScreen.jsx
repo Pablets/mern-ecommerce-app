@@ -4,6 +4,7 @@ import { PayPalButton } from 'react-paypal-button-v2';
 import { Link } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import CheckoutSteps from '../components/CheckoutSteps';
 import Message from '../components/Message';
 import Loader from '../components/CheckoutSteps';
 import {
@@ -91,19 +92,22 @@ const OrderScreen = ({ match, history }) => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order {order._id}</h1>
+      <CheckoutSteps step1 step2 step3 step4 />
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
+            <h1 className="pl-3">Shipping</h1>
             <ListGroup.Item>
-              <h2>Shipping</h2>
+              <h5>Order {order._id}</h5> 
               <p>
                 <strong>Name: </strong>
                 {order.user.name}
               </p>
               <p>
                 <strong>Email: </strong>
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
+                <a href={`mailto:${order.user.email}`}>
+                  {order.user.email}
+                </a>
               </p>
               <p>
                 <strong>Address: </strong>
@@ -120,7 +124,7 @@ const OrderScreen = ({ match, history }) => {
               )}
             </ListGroup.Item>
 
-            <ListGroup.Item>
+            <ListGroup.Item className=" mt-4 ">
               <p>
                 <h2>Payment method</h2>
                 <strong>Method: </strong>
@@ -133,30 +137,36 @@ const OrderScreen = ({ match, history }) => {
               )}
             </ListGroup.Item>
 
-            <ListGroup.Item>
+            <ListGroup.Item className=" mt-4 ">
               <h2>Order items</h2>
               {order.orderItems.length === 0 ? (
                 <Message>Your order is empty</Message>
               ) : (
                 <ListGroup variant="flush">
                   {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row>
-                        <Col md={1}>
+                    <ListGroup.Item className="p-0" key={index}>
+                      <Row className="p-0">
+                        <Col
+                          md={1}
+                          className="p-0 d-flex align-items-center"
+                        >
                           <Image
                             src={item.image}
                             alt={item.name}
                             fluid
                             rounded
+                            className="pl-3 w-25"
                           ></Image>
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
+                          <Link
+                            className="d-flex pl-3 "
+                            to={`/product/${item.product}`}
+                          >
                             {item.name}
                           </Link>
                         </Col>
-                        <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                        <Col md={4} className="py-4">
+                          Subtotal: {item.qty} x ${item.price} = $
+                          {item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -191,12 +201,18 @@ const OrderScreen = ({ match, history }) => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
+                <Row className="d-flex align-items-center  p-0">
+                  <Col>
+                    <h3 className="mb-0 font-weight-bold">Total</h3>
+                  </Col>
+                  <Col>
+                    <h3 className="mb-0 font-weight-bold">
+                      ${order.totalPrice}
+                    </h3>
+                  </Col>
                 </Row>
               </ListGroup.Item>
-              {!order.isPaid && (
+              {!order.isPaid && order.paymentMethod === 'PayPal' && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
                   {!sdkReady ? (
@@ -207,6 +223,13 @@ const OrderScreen = ({ match, history }) => {
                       onSuccess={successPaymentHandler}
                     />
                   )}
+                </ListGroup.Item>
+              )}
+              ,
+              {!order.isPaid && order.paymentMethod === 'MercadoPago' && (
+                <ListGroup.Item>
+                  {loadingPay && <Loader />}
+                  {!sdkReady ? <Loader /> : <h2>MercadoPago</h2>}
                 </ListGroup.Item>
               )}
               {loadingDeliver && <Loader />}

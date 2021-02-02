@@ -15,6 +15,8 @@ const ProductEditScreen = ({ match, history }) => {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
+  const [featuredImage, setFeaturedImage] = useState('');
+  const [featuredImageMobile, setFeaturedImageMobile] = useState('');
   const [brand, setBrand] = useState('');
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState(0);
@@ -44,6 +46,8 @@ const ProductEditScreen = ({ match, history }) => {
         setName(product.name);
         setPrice(product.price);
         setImage(product.image);
+        setFeaturedImage(product.featuredImage);
+        setFeaturedImageMobile(product.featuredImageMobile);
         setBrand(product.brand);
         setCategory(product.category);
         setCountInStock(product.countInStock);
@@ -52,10 +56,10 @@ const ProductEditScreen = ({ match, history }) => {
     }
   }, [dispatch, history, productId, product, successUpdate]);
 
-  const uploadFileHandler = async (e) => {
-    const file = e.target.files[0];
+  const uploadFileHandler = async (e, file = []) => {
+    file = e.target.files;
     const formData = new FormData();
-    formData.append('image', file);
+    formData.append('image', file[0]);
     setUploading(true);
 
     try {
@@ -66,8 +70,16 @@ const ProductEditScreen = ({ match, history }) => {
       };
 
       const { data } = await axios.post('/api/upload', formData, config);
+      console.log(data);
 
-      setImage(data);
+      if (e.target.id === 'featured-image-file') {
+        setFeaturedImage(data);
+      } else if (e.target.id === 'image-file') {
+        setImage(data);
+      } else if (e.target.id === 'mobile-featured-image-file') {
+        setFeaturedImageMobile(data);
+      }
+
       setUploading(false);
     } catch (error) {
       console.error(error);
@@ -83,6 +95,8 @@ const ProductEditScreen = ({ match, history }) => {
         name,
         price,
         image,
+        featuredImage,
+        featuredImageMobile,
         brand,
         category,
         description,
@@ -138,6 +152,43 @@ const ProductEditScreen = ({ match, history }) => {
                 id="image-file"
                 label="Choose File"
                 custom
+                multiple
+                onChange={uploadFileHandler}
+              ></Form.File>
+              {uploading && <Loader />}
+            </Form.Group>
+
+            <Form.Group controlId="featuredimage">
+              <Form.Label>Featured image</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image url"
+                value={featuredImage}
+                onChange={(e) => setFeaturedImage(e.target.value)}
+              ></Form.Control>
+              <Form.File
+                id="featured-image-file"
+                label="Choose File"
+                custom
+                multiple
+                onChange={uploadFileHandler}
+              ></Form.File>
+              {uploading && <Loader />}
+            </Form.Group>
+
+            <Form.Group controlId="mobilefeaturedimage">
+              <Form.Label>Featured image {`(mobile)`}</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter image url"
+                value={featuredImageMobile}
+                onChange={(e) => setFeaturedImageMobile(e.target.value)}
+              ></Form.Control>
+              <Form.File
+                id="mobile-featured-image-file"
+                label="Choose File"
+                custom
+                multiple
                 onChange={uploadFileHandler}
               ></Form.File>
               {uploading && <Loader />}

@@ -21,6 +21,9 @@ import {
   PRODUCT_TOP_SUCCESS,
   PRODUCT_TOP_FAIL,
   PRODUCT_TOP_REQUEST,
+  PRODUCT_FEATURED_REQUEST,
+  PRODUCT_FEATURED_SUCCESS,
+  PRODUCT_FEATURED_FAIL,
 } from '../constants/productConstants';
 
 export const listProducts = (keyword = '', pageNumber = '') => async (
@@ -221,6 +224,48 @@ export const listTopProducts = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: PRODUCT_TOP_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listFeaturedProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_FEATURED_REQUEST });
+
+    const { data } = await axios.get(`/api/products/featured`);
+
+    dispatch({
+      type: PRODUCT_FEATURED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_FEATURED_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
+export const listFeaturedMobileProducts = () => async (dispatch) => {
+  try {
+    dispatch({ type: PRODUCT_FEATURED_REQUEST });
+
+    const { data } = await axios.get(`/api/products/featuredmobile`);
+
+    dispatch({
+      type: PRODUCT_FEATURED_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_FEATURED_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
