@@ -98,16 +98,14 @@ const OrderScreen = ({ match, history }) => {
           <ListGroup variant="flush">
             <h1 className="pl-3">Shipping</h1>
             <ListGroup.Item>
-              <h5>Order {order._id}</h5> 
+              <h5>Order {order._id}</h5>
               <p>
                 <strong>Name: </strong>
                 {order.user.name}
               </p>
               <p>
                 <strong>Email: </strong>
-                <a href={`mailto:${order.user.email}`}>
-                  {order.user.email}
-                </a>
+                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
               </p>
               <p>
                 <strong>Address: </strong>
@@ -125,11 +123,11 @@ const OrderScreen = ({ match, history }) => {
             </ListGroup.Item>
 
             <ListGroup.Item className=" mt-4 ">
-              <p>
+              <div>
                 <h2>Payment method</h2>
                 <strong>Method: </strong>
                 {order.paymentMethod}
-              </p>
+              </div>
               {order.isPaid ? (
                 <Message variant="success">Paid on {order.paidAt}</Message>
               ) : (
@@ -146,10 +144,7 @@ const OrderScreen = ({ match, history }) => {
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item className="p-0" key={index}>
                       <Row className="p-0">
-                        <Col
-                          md={1}
-                          className="p-0 d-flex align-items-center"
-                        >
+                        <Col md={1} className="p-0 d-flex align-items-center">
                           <Image
                             src={item.image}
                             alt={item.name}
@@ -242,6 +237,7 @@ const OrderScreen = ({ match, history }) => {
                       type="button"
                       className="btn btn-block"
                       onClick={deliverHandler}
+                      passive="true"
                     >
                       Mark as delivered
                     </Button>

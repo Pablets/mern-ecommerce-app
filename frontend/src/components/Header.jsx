@@ -71,7 +71,7 @@ const Header = () => {
                         className="bg-dark pb-3 mb-n3"
                         onClick={logoutHandler}
                       >
-                        <h6 bg-dark className="text-light">
+                        <h6 className="text-light">
                           Logout
                         </h6>
                       </NavDropdown.Item>

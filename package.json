@@ -33,5 +33,13 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pablets/mern-ecommerce-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Pablets/mern-ecommerce-app/issues"
+  },
+  "homepage": "https://github.com/Pablets/mern-ecommerce-app#readme"
 }
