@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -26,6 +27,9 @@ const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
+  const isDesktop = useMediaQuery({
+    query: '(min-device-width: 1224px)',
+  });
 
   const dispatch = useDispatch();
 
@@ -67,9 +71,13 @@ const ProductScreen = ({ history, match }) => {
 
   return (
     <Container>
-      <Link className="shadow btn btn-light my-3" to="/">
-        Go back
-      </Link>
+      {isDesktop && (
+        <>
+          <Link className="shadow btn btn-light my-3" to="/">
+            Go back
+          </Link>
+        </>
+      )}
       {loading ? (
         <Loader />
       ) : error ? (
@@ -77,8 +85,9 @@ const ProductScreen = ({ history, match }) => {
       ) : (
         <>
           <Meta title={product.name} />
+
           <Row>
-            <Col md={6}>
+            <Col>
               {!product.image ? (
                 <Spinner animation="border" role="status">
                   <span className="sr-only">Loading...</span>
@@ -91,8 +100,6 @@ const ProductScreen = ({ history, match }) => {
                   fluid
                 />
               )}
-            </Col>
-            <Col md={3}>
               <ListGroup className="pt-4 pt-md-0" variant="flush">
                 <ListGroup.Item>
                   <h3>{product.name}</h3>
@@ -109,9 +116,9 @@ const ProductScreen = ({ history, match }) => {
                 </ListGroup.Item>
               </ListGroup>
             </Col>
-            <Col md={3}>
+            <Col sm={12} md={3}>
               <Card>
-                <ListGroup className="shadow" variant="flush">
+                <ListGroup className="pt-4 pt-md-0" variant="flush">
                   <ListGroup.Item>
                     <Row>
                       <Col>Price:</Col>
@@ -165,22 +172,24 @@ const ProductScreen = ({ history, match }) => {
             </Col>
           </Row>
           <Row>
-            <Col md={6} className="pt-3">
-              <h2>Reviews</h2>
-              {product.reviews.length === 0 && <Message>No reviews</Message>}
-              <ListGroup variant="flush">
+            <Col md={9} className="pt-3">
+              <ListGroup className="pt-4 pt-md-0" variant="flush">
+                <ListGroup.Item>
+                  <h2>Reviews</h2>
+                  {product.reviews.length === 0 && (
+                    <Message>No reviews</Message>
+                  )}
+                </ListGroup.Item>
+
                 {product.reviews.map((review) => (
-                  <ListGroup.Item
-                    className="px-0 mx-sm-0 pt-sm-2"
-                    key={review._id}
-                  >
+                  <ListGroup.Item key={review._id}>
                     <strong>{review.name}</strong>
                     <Rating value={review.rating} />
                     <p>{review.createdAt.substring(0, 10)}</p>
                     <p>{review.comment}</p>
                   </ListGroup.Item>
                 ))}
-                <ListGroup.Item className="px-0 mx-sm-0">
+                <ListGroup.Item>
                   <h2>Write a customer review</h2>
                   {errorProductReview && (
                     <Message variant="danger">{errorProductReview}</Message>

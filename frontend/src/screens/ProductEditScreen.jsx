@@ -11,7 +11,6 @@ import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 const ProductEditScreen = ({ match, history }) => {
   const productId = match.params.id;
-
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');

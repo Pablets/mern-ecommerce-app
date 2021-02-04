@@ -13,7 +13,11 @@ import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config();
 
-connectDB();
+if (process.env.NODE_ENV === 'development') {
+  connectDB(process.env.MONGO_DEV_URI);
+} else if (process.env.NODE_ENV === 'production') {
+  connectDB(process.env.MONGO_URI);
+}
 
 const app = express();
 
@@ -29,7 +33,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
-res.send(process.env.PAYPAL_CLIENT_ID)
+  res.send(process.env.PAYPAL_CLIENT_ID)
 );
 
 const __dirname = path.resolve();

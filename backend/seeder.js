@@ -10,7 +10,11 @@ import connectDB from './config/db.js';
 
 dotenv.config();
 
-connectDB();
+if (process.env.NODE_ENV === 'development') {
+    connectDB(process.env.MONGO_DEV_URI);
+  } else if (process.env.NODE_ENV === 'production') {
+    connectDB(process.env.MONGO_URI);
+  }
 
 const importData = async () => {
     try {

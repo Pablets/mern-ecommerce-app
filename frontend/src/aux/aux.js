@@ -15,10 +15,8 @@ import {
 import {
   ORDER_PAY_RESET,
   ORDER_DELIVER_RESET,
-  ORDER_LIST_MY_RESET,
 } from '../constants/orderConstants';
 import { PRODUCT_UPDATE_STOCK_RESET } from '../constants/productConstants';
-// import { PRODUCT_UPDATE_STOCK_RESET } from '../constants/productConstants';
 import { removeFromCart } from '../actions/cartActions';
 import { updateProductStock } from '../actions/productActions';
 
@@ -85,15 +83,8 @@ const OrderScreen = ({ match, history }) => {
       document.body.appendChild(script);
     };
 
-    if (successStockUpdate) {
-      console.log('PRODUCT_UPDATE_STOCK_RESET');
-      dispatch({ type: PRODUCT_UPDATE_STOCK_RESET });
-    }
-
-    if (!order || successPay || successDeliver || order._id !== orderId) {
-      console.log('ORDER_PAY_RESET');
+    if (!order || successPay || successDeliver) {
       dispatch({ type: ORDER_PAY_RESET });
-      console.log('ORDER_DELIVER_RESET');
       dispatch({ type: ORDER_DELIVER_RESET });
       dispatch(getOrderDetails(orderId));
     } else if (!order.isPaid) {
@@ -106,33 +97,23 @@ const OrderScreen = ({ match, history }) => {
         // actualizar en la BD
         //Resting the bougth products from the stock
       }
-    }
 
-    if (order && successPay) {
-      console.log('sale del loop');
+      console.log('sale del loop')
+      // (order && successPay && !successUpdate)
+    } else if (order && successPay && !successStockUpdate) {
       order.orderItems.forEach((item, i) => {
-        console.log(
-          `countinstock: ${cartItems[i].countInStock}
-              -
-            qty: ${item.qty}
-          Equals: ${cartItems[i].countInStock - item.qty}`
-        );
-        const updatedStock = cartItems[i].countInStock - item.qty
-        // console.log(`Equals: ${cartItems[i].countInStock - item.qty}`);
-        // console.log('countinstock: ', countInStock);
-        // console.log('countinstock: ', countInStock);
         setCountInStock(cartItems[i].countInStock - item.qty);
+        console.log('countinstock: ', countInStock);
         dispatch(
           updateProductStock({
             _id: item.product,
-            countInStock: updatedStock,
+            countInStock,
           })
         );
         dispatch(removeFromCart(item.product));
       });
+      dispatch({ type: PRODUCT_UPDATE_STOCK_RESET });
       console.log('products updated');
-      console.log('list reseted');
-      dispatch({ type: ORDER_LIST_MY_RESET });
     }
   }, [
     dispatch,

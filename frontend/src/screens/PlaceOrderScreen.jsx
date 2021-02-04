@@ -5,6 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { createOrder } from '../actions/orderActions';
+import { ORDER_CREATE_RESET } from '../constants/orderConstants';
+import { USER_DETAILS_RESET } from '../constants/userConstants';
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ const PlaceOrderScreen = ({ history }) => {
   useEffect(() => {
     if (success) {
       history.push(`/order/${order._id}`);
+      dispatch({ type: USER_DETAILS_RESET });
+      dispatch({ type: ORDER_CREATE_RESET });
     }
     // eslint-disable-next-line
   }, [history, success]);
@@ -66,24 +70,24 @@ const PlaceOrderScreen = ({ history }) => {
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
-              {/* <h2>Shipping</h2> */}
             <ListGroup.Item>
-              <div>
+              <h2>Shipping</h2>
+              <p>
                 <strong>Address: </strong>
                 {cart.shippingAddress.address} ,{cart.shippingAddress.city} ,
                 {cart.shippingAddress.postalCode} ,
                 {cart.shippingAddress.country}
-              </div>
+              </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
-              {/* <h2>Payment method</h2> */}
+              <h2>Payment method</h2>
               <strong>Method: </strong>
               {cart.paymentMethod}
             </ListGroup.Item>
 
-              {/* <h2>Order items</h2> */}
             <ListGroup.Item>
+              <h2>Order items</h2>
               {cart.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
@@ -119,7 +123,7 @@ const PlaceOrderScreen = ({ history }) => {
           <Card>
             <ListGroup variant="flush">
               <ListGroup.Item>
-                {/* <h2>Order Summary</h2> */}
+                <h2>Order Summary</h2>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
@@ -129,13 +133,13 @@ const PlaceOrderScreen = ({ history }) => {
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col><h6>Shipping</h6></Col>
+                  <Col>Shipping</Col>
                   <Col>${cart.shippingPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
-                  <Col><h6>Tax</h6></Col>
+                  <Col>Tax</Col>
                   <Col>${cart.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>

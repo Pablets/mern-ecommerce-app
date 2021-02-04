@@ -6,6 +6,7 @@ import {
   deleteProduct,
   createProduct,
   updateProduct,
+  updateProductStock,
   createProductReview,
   getTopProducts,
   getFeaturedProducts,
@@ -23,5 +24,6 @@ router
   .get(getProductById)
   .delete(protect, admin, deleteProduct)
   .put(protect, admin, updateProduct);
+router.route('/:id/stock').put(protect, updateProductStock);
 
 export default router;

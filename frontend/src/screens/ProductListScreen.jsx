@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row, Col } from 'react-bootstrap';
+import { Table, Button, Row, Col, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -15,6 +16,9 @@ import { PRODUCT_CREATE_RESET } from '../constants/productConstants';
 const ProductListScreen = ({ history, match }) => {
   const pageNumber = match.params.pageNumber || 1;
 
+  const isDesktop = useMediaQuery({
+    query: '(min-device-width: 1224px)',
+  });
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productList);
@@ -71,14 +75,18 @@ const ProductListScreen = ({ history, match }) => {
   };
 
   return (
-    <>
-      <Row className="align-items-center">
-        <Col>
+    <Container>
+      <Row className="py-4">
+        <Col sm={12}>
           <h1>Products</h1>
         </Col>
-        <Col className="text-right">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus"></i> Create Product
+        <Col sm={12} className="d-flex justify-content-end pt-3">
+          <Button
+            className="py-2 mr-0 d-flex justify-content-end align-items-center"
+            onClick={createProductHandler}
+          >
+            <i className="text-light p-0 m-0 h5 fas fa-plus"></i>
+            <p className="pl-2 m-0">Create</p>
           </Button>
         </Col>
       </Row>
@@ -95,22 +103,19 @@ const ProductListScreen = ({ history, match }) => {
           <Table striped bordered hover responsive className="table-sm">
             <thead>
               <tr>
-                <th>ID</th>
+                {isDesktop && <th>ID</th>}
+                <th>EDIT</th>
                 <th>NAME</th>
                 <th>PRICE</th>
+                <th>STOCK</th>
                 <th>CATEGORY</th>
                 <th>BRAND</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
               {products.map((product) => (
                 <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
+                  {isDesktop && <td>{product._id}</td>}
                   <td>
                     <LinkContainer to={`/admin/product/${product._id}/edit`}>
                       <Button variant="light" className="btn-sm">
@@ -125,6 +130,11 @@ const ProductListScreen = ({ history, match }) => {
                       <i className="fas fa-trash"></i>
                     </Button>
                   </td>
+                  <td>{product.name}</td>
+                  <td>${product.price}</td>
+                  <td>{product.countInStock}</td>
+                  <td>{product.category}</td>
+                  <td>{product.brand}</td>
                 </tr>
               ))}
             </tbody>
@@ -132,7 +142,7 @@ const ProductListScreen = ({ history, match }) => {
           <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
-    </>
+    </Container>
   );
 };
 

@@ -17,7 +17,7 @@ const products = [
     name: 'iPhone 11 Pro 256GB Memory',
     image: '/images/phone.jpg',
     featuredImage: '',
-    featuredImageMobile: '/images/banner-phone-mobile.jpg',
+    featuredImageMobile: '',
     description:
       'Introducing the iPhone 11 Pro. A transformative triple-camera system that adds tons of capability without complexity. An unprecedented leap in battery life',
     brand: 'Apple',
@@ -44,7 +44,7 @@ const products = [
   {
     name: 'Sony Playstation 4 Pro White Version',
     image: '/images/playstation.jpg',
-    featuredImage: '/images/banner-playstation.jpg',
+    featuredImage: '',
     featuredImageMobile: '',
     description:
       'The ultimate home entertainment center starts with PlayStation. Whether you are into gaming, HD movies, television, music',
